@@ -795,6 +795,8 @@ export default function ChessApp() {
     setGs(prev => {
       if (prev.history.length === 0) return prev;
       const last = prev.history[prev.history.length - 1];
+      const newMoveHistory = prev.moveHistory.slice(0, -1);
+      const newLastMove = newMoveHistory.length > 0 ? { from: newMoveHistory[newMoveHistory.length - 1].from, to: newMoveHistory[newMoveHistory.length - 1].to } : null;
       return {
         ...prev,
         board: last.board,
@@ -804,12 +806,12 @@ export default function ChessApp() {
         selectedSquare: null,
         legalMoves: [],
         history: prev.history.slice(0, -1),
-        moveHistory: prev.moveHistory.slice(0, -1),
+        moveHistory: newMoveHistory,
         gameResult: GAME_RESULT.ONGOING,
         capturedByWhite: last.capturedByWhite,
         capturedByBlack: last.capturedByBlack,
         inCheck: false,
-        lastMove: prev.history.length > 1 ? { from: prev.history[prev.history.length - 2]?.lastFrom, to: prev.history[prev.history.length - 2]?.lastTo } : null,
+        lastMove: newLastMove,
         pendingPromotion: null,
       };
     });
